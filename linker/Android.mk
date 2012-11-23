@@ -47,9 +47,6 @@ LOCAL_CFLAGS_x86 += -D__work_around_b_24465209__
 LOCAL_CONLYFLAGS += \
     -std=gnu99 \
 
-LOCAL_CPPFLAGS += \
-    -Wold-style-cast \
-
 ifeq ($(TARGET_IS_64_BIT),true)
 LOCAL_CPPFLAGS += -DTARGET_IS_64_BIT
 endif
@@ -60,6 +57,10 @@ endif
 
 # We need to access Bionic private headers in the linker.
 LOCAL_CFLAGS += -I$(LOCAL_PATH)/../libc/
+
+ifeq ($(TARGET_NEEDS_BIONIC_PRELINK_SUPPORT),true)
+    LOCAL_CFLAGS += -DENABLE_PRELINK_SUPPORT
+ endif
 
 ifneq ($(LINKER_NON_PIE_EXECUTABLES_HEADER_DIR),)
     LOCAL_CFLAGS += -DENABLE_NON_PIE_SUPPORT
